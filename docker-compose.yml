@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  # frontend
+
+  # backend
+
+  # mosquitto
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto_broker
+    ports:
+      - "1883:1883" # MQTT 기본 통신
+      - "9001:9001" # 웹소켓 포트 (frontend 연동)
+    volumes:
+      - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    restart: always
