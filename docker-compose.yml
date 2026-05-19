@@ -2,6 +2,17 @@ version: '3.8'
 
 services:
   # frontend
+  frontend:
+    image: node:20-alpine
+    container_name: monitoring-frontend
+    working_dir: /app
+    volumes:
+      - ../FRONTEND:/app   # 🟢 내 맥북의 코드를 도커 안으로 실시간 동기화
+    command: npm run dev         # 🟢 개발 모드 서버 실행
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
 
   # backend
   backend:
