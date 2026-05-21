@@ -1,0 +1,35 @@
+services:
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_WS_URL: ${NEXT_PUBLIC_WS_URL}
+    container_name: monitoring-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    restart: always
+
+  backend:
+    build:
+      context: ../monitoring-server
+      dockerfile: Dockerfile
+    container_name: monitoring-api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mosquitto
+    environment:
+      - MQTT_BROKER_HOST=mosquitto
+    restart: always
+
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto_broker
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    restart: always
